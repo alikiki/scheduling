@@ -1,9 +1,11 @@
 import pandas as pd
+import numpy as np
 import random
+
 
 class Duty:
 	"""
-	Duty schedule 
+	Duty : schedule data structure
 
 	Instance variables: 
 		people (list)
@@ -12,6 +14,7 @@ class Duty:
 	Methods:
 		get_hours = gets number of hours worked for single person
 		get_hours_all = gets number of hours worked for all people
+		get_std = gets standard deviation of number of hours worked
 		change_state_random = randomly changes all slots of schedule
 	
 	"""
@@ -29,7 +32,6 @@ class Duty:
 		#### weekdays have 2 slots : 0800 ~ 0900, 1700 ~ 2400
 		#### weekends have 3 slots : 0800 ~ 0900, 0900 ~ 1700, 1700 ~ 2400
 		self.pdtable = Duty.change_state_random(self)
-
 
 	#returns people and schedule
 	def __repr__(self):
@@ -49,6 +51,10 @@ class Duty:
 	def get_hours_all(self):
 		return(pd.DataFrame({name : Duty.get_hours(self, name) for name in self.people}, index=[0]))
 
+	#gets standard deviation of hours worked
+	def get_std(self):
+		return(Duty.get_hours_all(self).values.std(ddof=1))
+
 	#changes state by randomly assigning people to slots in schedule
 	def change_state_random(self):
 		self.pdtable = pd.DataFrame(
@@ -57,15 +63,20 @@ class Duty:
 			for hour in range(3)},index=Duty.weekdays)
 		return(self.pdtable)
 
+	#changes state by randomly switching two slots
+	#### weekends < -- > weekends
+	#### weekdays < -- > weekdays
+
 
 ################ tests ################
-test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
-print(test)
+#test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
+#print(test)
 #print(test.people)
 #print(test.table)
 #print(test.pdtable)
 #print(test.get_hours('echo'))
 #print(test.get_hours_all())
+#print(test.get_std())
 
 
 
