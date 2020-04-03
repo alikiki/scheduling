@@ -12,10 +12,10 @@ def simulanneal(people):
 	best = s.Duty(people)
 
 	#number of cycles
-	cycle = 80
+	cycle = 50
 
 	#number of trials per cycle
-	trial = 50
+	trial = 70
 
 	#probability of accepting worse solution at start
 	pstart_worst = 0.7
@@ -32,6 +32,7 @@ def simulanneal(people):
 	#increments of temperature reduction
 	temp_frac = (temp_fin/temp_init)**(1.0/(cycle-1.0))
 
+	#list of best(lowest) standard deviations
 	std_list = np.zeros(cycle+1)
 	std_list[0] = best.get_std()
 
@@ -49,13 +50,13 @@ def simulanneal(people):
 
 		temp = temp_frac * temp
 
+	print(best)
+	print('Standard Deviation: {}'.format(best.get_std()))
+
 	plt.plot(std_list)
 	plt.xlabel('Cycle')
 
 	plt.show()
-
-	print(best)
-	print(best.get_std())
 
 def accept(current, best, temperature):
 	if current.get_std() > best.get_std():
