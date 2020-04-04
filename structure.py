@@ -16,7 +16,12 @@ class Duty:
 		get_hours_all = gets number of hours worked for all people
 		get_std = gets standard deviation of number of hours worked
 		change_state_random = randomly changes all slots of schedule
-	
+		change_state_switch = randomly chooses two slots, then switches them
+
+		helpers:
+			switcher = switches two slots
+
+		gengeneration = generates 
 	"""
 
 	weekdays = [
@@ -24,7 +29,7 @@ class Duty:
 		'Thursday', 'Friday', 'Saturday', 'Sunday'
 		]
 
-	def __init__(self, people):
+	def __init__(self, people, ind):
 		#names list
 		self.people = people
 
@@ -33,7 +38,11 @@ class Duty:
 		#### weekends have 3 slots : 0800 ~ 0900, 0900 ~ 1700, 1700 ~ 2400
 		self.pdtable = Duty.change_state_random(self)
 
-		self.gentable 
+		#generations table : initial pool
+		self.gentable = np.random.random_integers(0, len(self.people), size=(ind,16))
+
+		#fitness
+		self.fitness = Duty.fitness(self)
 
 	#returns people and schedule
 	def __repr__(self):
@@ -56,6 +65,8 @@ class Duty:
 	#gets standard deviation of hours worked
 	def get_std(self):
 		return(Duty.get_hours_all(self).values.std(ddof=1))
+
+	############ SIMULATED ANNEALING ############
 
 	#changes state by randomly assigning people to slots in schedule
 	def change_state_random(self):
@@ -94,9 +105,39 @@ class Duty:
 
 	########### GENETIC #############
 
+	#helper : returns fitness of individuals
+	def fitness_single(self, ind):
+		hours = np.array([1,7,1,7,1,7,1,7,1,7,1,7,8,1,7,8])
+		sums = []
+
+		for i in range(len(self.people)):
+			wherepeople = (ind == i).astype(int)
+			single_sum = np.sum(np.dot(hours, wherepeople))
+			sums.append(single_sum)
+
+		return(np.std(sums))
+
+	#returns fitness of generation (list)
+	def fitness(self):
+		number_of_ind = len(self.gentable)
+
+		fitness = []
+		for i in range(number_of_ind):
+			fitness.append(Duty.fitness_single(self, self.gentable[i]))
+
+		return(np.array(fitness))
+
+	#next generation
+	def selection(self):
+		ind = np.argpartition(self.fitness, 2)[:2]
+		parents = self.gentable[ind]
+		parents_fitness = self.fitness[ind]
+
+		return(parents, parents_fitness)
+
 
 ################ tests ################
-# = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
+test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'], 10**4)
 #print(test)
 #print(test.get_std())
 #print(test.people)
@@ -106,8 +147,15 @@ class Duty:
 #print(test.get_hours_all())
 #print(test.get_std())
 #test.change_state_switch()
-#print(test)
-#print(test.get_std())
+
+print("Generation: \n{}".format(test.gentable))
+print("Fitness: \n{}".format(test.fitness))
+
+#print(test.selection())
+
+
+
+
 
 
 

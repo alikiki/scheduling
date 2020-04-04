@@ -8,16 +8,16 @@ import math
 
 import structure as s
 
-def simulanneal(people):
+def simulanneal(people,ind):
 	#best / optimal state
-	best = s.Duty(people)
-	current = s.Duty(people)
+	best = s.Duty(people,ind)
+	current = s.Duty(people,ind)
 
 	#number of cycles
-	cycle = 60
+	cycle = 50
 
 	#number of trials per cycle
-	trial = 80
+	trial = 20
 
 	#probability of accepting worse solution at start
 	pstart_worst = 0.7
@@ -41,7 +41,7 @@ def simulanneal(people):
 	#temperature variable
 	temp = temp_init
 
-	counter = 1
+	counter = 0
 	#simulated annealing 
 	for i in range(cycle):
 		print('Cycle: {} with temperature {}'.format(i, temp))
@@ -74,6 +74,10 @@ def accept(curr, bes, temperature):
 		else: return False
 	else:
 		return True
+
+def accept_stateswitch(curr, bes, temperature):
+	if curr.get_std() > bes.get_std() or random.random() < acc_prob(curr, bes, temperature): return True
+	else: return False
 
 #helper : calculuates acceptance probability
 def acc_prob(curr, bes, temperature):
@@ -112,7 +116,7 @@ def whichchange(people):
 	plt.show()
 
 
-simulanneal(['a','b','c','d','e','f'])
+#simulanneal(['a','b','c','d','e','f'],0)
 #whichchange(['a','b','c','d','e','f'])
 
 
