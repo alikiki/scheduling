@@ -116,7 +116,7 @@ def whichchange(people):
 	plt.show()
 
 
-#simulanneal(['a','b','c','d','e','f'],0)
+simulanneal(['a','b','c','d','e','f'],0)
 #whichchange(['a','b','c','d','e','f'])
 
 

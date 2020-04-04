@@ -32,6 +32,7 @@ class Duty:
 	def __init__(self, people, ind):
 		#names list
 		self.people = people
+		self.ind = ind
 
 		#initial state : assigns people to slots randomly
 		#### weekdays have 2 slots : 0800 ~ 0900, 1700 ~ 2400
@@ -42,7 +43,7 @@ class Duty:
 		self.gentable = np.random.random_integers(0, len(self.people), size=(ind,16))
 
 		#fitness
-		self.fitness = Duty.fitness(self)
+		self.fitness = Duty.fitness_gen(self, self.gentable)
 
 	#returns people and schedule
 	def __repr__(self):
@@ -117,27 +118,64 @@ class Duty:
 
 		return(np.std(sums))
 
-	#returns fitness of generation (list)
-	def fitness(self):
-		number_of_ind = len(self.gentable)
-
+	#returns fitness of whole generation (list)
+	def fitness_gen(self, generation):
 		fitness = []
-		for i in range(number_of_ind):
-			fitness.append(Duty.fitness_single(self, self.gentable[i]))
+		for i in range(len(generation)):
+			fitness.append(Duty.fitness_single(self, generation[i]))
 
 		return(np.array(fitness))
 
-	#next generation
-	def selection(self):
-		ind = np.argpartition(self.fitness, 2)[:2]
+	def best_fitness(self):
+		return(self.fitness[np.argmin(self.fitness)])
+
+	def return_optimal(self):
+		return("Best schedule: {} \nFitness: {}".format(
+			self.gentable[np.argmin(self.fitness)], 
+			self.fitness[np.argmin(self.fitness)]))
+
+	#selection of parents
+	def selection(self, parent_num):
+		ind = np.argpartition(self.fitness, parent_num)[:parent_num]
 		parents = self.gentable[ind]
 		parents_fitness = self.fitness[ind]
 
-		return(parents, parents_fitness)
+		return(parents)
+
+	#crossover : swaps halves of parents 
+	def crossover(self, parents, offspringsize):
+		offspring = np.empty((offspringsize,16))
+		crossover_point = 8
+
+		#swaps halves between parents on a ring
+		for k in range(offspringsize):
+			par1_idx = k%parents.shape[0]
+			par2_idx = (k+1)%parents.shape[0]
+
+			offspring[k, 0:crossover_point] = parents[par1_idx, 0:crossover_point]
+			offspring[k, crossover_point:] = parents[par2_idx, crossover_point:]
+
+		return(offspring)
+
+	#mutation : randomly changes one slot in the schedule to a random person
+	def mutation(self, offspring):
+		for ind in range(len(offspring)):
+			rand_ind = random.randrange(0,16)
+			rand_point = random.randrange(0, len(self.people))
+			offspring[ind, rand_ind] = rand_point
+
+		return(offspring) 
+
+	#combines parent and offspring to make a new population/generation
+	def newpop(self):
+		parents = Duty.selection(self, int((self.ind)/2))
+		offspring = Duty.mutation(self, Duty.crossover(self, parents, self.ind - len(parents))).astype(int)
+		self.gentable =  np.concatenate([parents, offspring])
+		self.fitness = Duty.fitness_gen(self, self.gentable)
 
 
 ################ tests ################
-test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'], 10**4)
+#test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'], 100)
 #print(test)
 #print(test.get_std())
 #print(test.people)
@@ -148,20 +186,11 @@ test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'], 10
 #print(test.get_std())
 #test.change_state_switch()
 
-print("Generation: \n{}".format(test.gentable))
-print("Fitness: \n{}".format(test.fitness))
-
-#print(test.selection())
-
-
-
-
-
-
-
-
-
-		
-
-	
-
+#print("Generation: \n{}".format(test.gentable))
+#print("Fitness: \n{}".format(test.fitness))
+#print(test.selection(5))
+#print(test.fitness_gen(test.selection(5)))
+#print(test.crossover(test.selection(5), 5))
+#print(test.fitness_gen(test.crossover(test.selection(5), 5)))
+#print(test.mutation(test.crossover(test.selection(5), 5)))
+#print(test.fitness_gen(test.mutation(test.crossover(test.selection(5), 5))))
