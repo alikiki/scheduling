@@ -33,9 +33,11 @@ class Duty:
 		#### weekends have 3 slots : 0800 ~ 0900, 0900 ~ 1700, 1700 ~ 2400
 		self.pdtable = Duty.change_state_random(self)
 
+		self.gentable 
+
 	#returns people and schedule
 	def __repr__(self):
-		return("people : {} \nschedule : {}".format(self.people, self.pdtable))
+		return("people : {} \nschedule :\n{}".format(self.people, self.pdtable))
 
 	#total working hours for single person
 	#person (string)
@@ -63,21 +65,49 @@ class Duty:
 			for hour in range(3)},index=Duty.weekdays)
 		return(self.pdtable)
 
+
 	#changes state by randomly switching two slots
-	#### weekends < -- > weekends
-	#### weekdays < -- > weekdays
+	def change_state_switch(self):
+		weekendOrday = random.randrange(0,2)
+		#weekends < -- > weekends
+		if weekendOrday == 0: Duty.switcher(self, 0, 2, 0, 5)
+		#weekdays < -- > weekdays
+		else: Duty.switcher(self, 0, 3, 5, 7)
+
+
+	#helper : switches two slots
+	def switcher(self, first1, second1, first2, second2):
+		#list of random slot coordinates
+		places = [0,0,0,0]
+		for i in range(4):
+			if i % 2 == 0:
+				places[i] = random.randrange(first1, second1)
+			else:
+				places[i] = random.randrange(first2, second2)
+
+		#switching up
+		first = self.pdtable[places[0]][places[1]]
+		self.pdtable[places[0]][places[1]] = self.pdtable[places[2]][places[3]]
+		self.pdtable[places[2]][places[3]] = first
+
+		return(self.pdtable)
+
+	########### GENETIC #############
 
 
 ################ tests ################
-#test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
+# = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
 #print(test)
+#print(test.get_std())
 #print(test.people)
 #print(test.table)
 #print(test.pdtable)
 #print(test.get_hours('echo'))
 #print(test.get_hours_all())
 #print(test.get_std())
-
+#test.change_state_switch()
+#print(test)
+#print(test.get_std())
 
 
 

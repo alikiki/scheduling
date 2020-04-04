@@ -9,13 +9,15 @@ import math
 import structure as s
 
 def simulanneal(people):
+	#best / optimal state
 	best = s.Duty(people)
+	current = s.Duty(people)
 
 	#number of cycles
-	cycle = 50
+	cycle = 60
 
 	#number of trials per cycle
-	trial = 70
+	trial = 80
 
 	#probability of accepting worse solution at start
 	pstart_worst = 0.7
@@ -36,40 +38,83 @@ def simulanneal(people):
 	std_list = np.zeros(cycle+1)
 	std_list[0] = best.get_std()
 
+	#temperature variable
 	temp = temp_init
+
+	counter = 1
+	#simulated annealing 
 	for i in range(cycle):
 		print('Cycle: {} with temperature {}'.format(i, temp))
-
 		for j in range(trial):
-			current = s.Duty(people)
-
+			current.change_state_random()
 			if accept(current, best, temp):
-				best = current
-			else: continue
+				best.pdtable = current.pdtable
+			else: 
+				continue
+
+		#add cycle's best state to list
 		std_list[i+1] = best.get_std()
 
+		#lower temperature
 		temp = temp_frac * temp
 
 	print(best)
 	print('Standard Deviation: {}'.format(best.get_std()))
 
-	plt.plot(std_list)
+	#plot best states per cycle
+	plt.plot(std_list, 'r.-')
 	plt.xlabel('Cycle')
 
 	plt.show()
 
-def accept(current, best, temperature):
-	if current.get_std() > best.get_std():
-		if random.random() < acc_prob(current, best, temperature): return True
+#helper : whether or not worse solution should be accepted
+def accept(curr, bes, temperature):
+	if curr.get_std() > bes.get_std():
+		if random.random() < acc_prob(curr, bes, temperature): return True
 		else: return False
 	else:
 		return True
 
-def acc_prob(current, best, temperature):
-	delta_E = abs(current.get_std()- best.get_std())
+#helper : calculuates acceptance probability
+def acc_prob(curr, bes, temperature):
+	delta_E = abs(curr.get_std()- bes.get_std())
 	return(math.exp(-delta_E / temperature))
 
+
+#testing which change_state is better
+def whichchange(people):
+	randomchange = s.Duty(people)
+	switchchange = s.Duty(people)
+
+	cycle = 10**2
+
+	randomdata = np.zeros(cycle+1)
+	switchdata = np.zeros(cycle+1)
+
+	for i in range(cycle):
+		randomdata[i+1] = randomchange.get_std()
+		randomchange.change_state_random()
+
+		if i % 3 == 0:
+			switchdata[i+1] = switchchange.get_std()
+			switchchange.change_state_random()
+		else:
+			switchdata[i+1] = switchchange.get_std()
+			switchchange.change_state_switch()
+			switchchange.change_state_switch()
+
+	fig = plt.figure()
+	ax1 = fig.add_subplot(211)
+	ax1.plot(randomdata,'r.-')
+	ax2 = fig.add_subplot(212)
+	ax2.plot(switchdata,'b.-')
+
+	plt.show()
+
+
 simulanneal(['a','b','c','d','e','f'])
+#whichchange(['a','b','c','d','e','f'])
+
 
 
 
