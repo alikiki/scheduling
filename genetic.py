@@ -10,7 +10,7 @@ import structure as s
 
 ################## GENETIC ALGORITHM ##################
 def genetic(people, ind, cycles):
-	Pop = s.Duty(people, ind)
+	Pop = s.DutyGEN(people, ind)
 
 	#list for collecting best fitness scores from each generation
 	best = []
@@ -23,13 +23,13 @@ def genetic(people, ind, cycles):
 		best.append(Pop.best_fitness())
 		print("Cycle: {} \n{}".format(i, Pop.return_optimal()))
 
-	print(Pop.return_optimal())
-
+	print(Pop.sum_single(Pop.best_individual()))
 	#plots best results per cycle
 	plt.plot(best, 'b.-')
 	plt.xlabel('Generation')
 	plt.show()
 
-genetic(['a','b','c','d','e','f'], 100, 10)
+genetic(['a','b','c','d','e','f'], 100, 20)
+
 
 

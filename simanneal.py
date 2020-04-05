@@ -11,8 +11,8 @@ import structure as s
 ################## SIMULATED ANNEALING ##################
 def simulanneal(people,ind):
 	#best / optimal state
-	best = s.Duty(people,ind)
-	current = s.Duty(people,ind)
+	best = s.DutySA(people)
+	current = s.DutySA(people)
 
 	#number of cycles
 	cycle = 50
@@ -89,10 +89,10 @@ def acc_prob(curr, bes, temperature):
 #testing which change_state is better, random or switch
 def whichchange(people):
 	#object for change_state_random
-	randomchange = s.Duty(people)
+	randomchange = s.DutySA(people)
 
 	#object for change_state_switch
-	switchchange = s.Duty(people)
+	switchchange = s.DutySA(people)
 
 	cycle = 10**2
 

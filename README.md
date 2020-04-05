@@ -16,3 +16,7 @@ I used two methods: simulated annealing and a genetic algorithm.
 
    This implementation was also made in Python, using a numpy-centric data structure.
 
+## In Depth
+### DutySA Class
+### DutyGEN Class
+
