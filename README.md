@@ -20,4 +20,9 @@ I used two methods: simulated annealing and a genetic algorithm.
 ### DutySA Class
 ### DutyGEN Class
 
+|Monday     |Tuesday    |Wednesday  |Thursday   |Friday     |Saturday   |Sunday     |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|Time1|Time2|Time1|Time2|Time1|Time2|Time1|Time2|Time1|Time2|Time3|Time1|Time2|Time3|
+
+
 
