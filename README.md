@@ -12,11 +12,12 @@ I used two methods: simulated annealing and a genetic algorithm.
 
 2. (Genetic Implementation)
 
-   While looking for papers that would improve my simulated annealing implementation, I stumbled on using genetic algorithms for block scheduling. I've always been excited by biology (and yes, I did once watch a [Youtube video where a genetic algorithm beat Mario with ease](https://www.youtube.com/watch?v=qv6UVOQ0F44 "Genetically superior Mario video")), so I tried it. In short, it works really, **really** well.
+   While looking for papers that would improve my simulated annealing implementation, I stumbled on using genetic algorithms for block scheduling. I've always been excited by biology (and yes, I did once watch a [Youtube video where a genetic algorithm beat Mario with ease](https://www.youtube.com/watch?v=qv6UVOQ0F44 "Genetically superior Mario video")), so I tried it. In short, it works reasonably well. Better than the simulated annealing implementation, in general.
 
    This implementation was also made in Python, using a numpy-centric data structure.
 
 ## In Depth
 ### DutySA Class
 ### DutyGEN Class
+
 
