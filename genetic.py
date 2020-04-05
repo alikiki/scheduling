@@ -8,10 +8,14 @@ import math
 
 import structure as s
 
+################## GENETIC ALGORITHM ##################
 def genetic(people, ind, cycles):
 	Pop = s.Duty(people, ind)
 
+	#list for collecting best fitness scores from each generation
 	best = []
+
+	#generation cycles(int) generations
 	for i in range(cycles):
 		print("Generation: \n{}".format(Pop.gentable))
 		print("Fitness: \n{}".format(Pop.fitness))

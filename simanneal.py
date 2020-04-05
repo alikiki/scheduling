@@ -8,6 +8,7 @@ import math
 
 import structure as s
 
+################## SIMULATED ANNEALING ##################
 def simulanneal(people,ind):
 	#best / optimal state
 	best = s.Duty(people,ind)
@@ -74,7 +75,7 @@ def accept(curr, bes, temperature):
 		else: return False
 	else:
 		return True
-
+#
 def accept_stateswitch(curr, bes, temperature):
 	if curr.get_std() > bes.get_std() or random.random() < acc_prob(curr, bes, temperature): return True
 	else: return False
@@ -85,13 +86,17 @@ def acc_prob(curr, bes, temperature):
 	return(math.exp(-delta_E / temperature))
 
 
-#testing which change_state is better
+#testing which change_state is better, random or switch
 def whichchange(people):
+	#object for change_state_random
 	randomchange = s.Duty(people)
+
+	#object for change_state_switch
 	switchchange = s.Duty(people)
 
 	cycle = 10**2
 
+	#lists for collecting standard deviation at end of each cycle
 	randomdata = np.zeros(cycle+1)
 	switchdata = np.zeros(cycle+1)
 
@@ -99,6 +104,7 @@ def whichchange(people):
 		randomdata[i+1] = randomchange.get_std()
 		randomchange.change_state_random()
 
+		#every 3 cycles, execute change_state_random
 		if i % 3 == 0:
 			switchdata[i+1] = switchchange.get_std()
 			switchchange.change_state_random()

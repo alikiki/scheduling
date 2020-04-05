@@ -19,9 +19,18 @@ class Duty:
 		change_state_switch = randomly chooses two slots, then switches them
 
 		helpers:
-			switcher = switches two slots
+			switcher = switches two slots 
 
-		gengeneration = generates 
+		fitness_gen = returns fitness of current generation
+		selection = selects best individuals of population 
+		crossover = crosses chromosomes of best individuals of population
+		mutation = applies random point mutation to offspring of best parents
+		newpop = combines parents and offspring to make a next generation
+		best_fitness = returns best fitness score of current generation
+		return_optimal = returns best individual and best fitness 
+
+		helpers: 
+			fitness_single = returns fitness of single generation
 	"""
 
 	weekdays = [
@@ -30,27 +39,30 @@ class Duty:
 		]
 
 	def __init__(self, people, ind):
+		#.......... simulated annealing..........
 		#names list
 		self.people = people
-		self.ind = ind
 
 		#initial state : assigns people to slots randomly
-		#### weekdays have 2 slots : 0800 ~ 0900, 1700 ~ 2400
-		#### weekends have 3 slots : 0800 ~ 0900, 0900 ~ 1700, 1700 ~ 2400
 		self.pdtable = Duty.change_state_random(self)
+
+
+		#.......... genetic algorithm ...........
+		#number of individuals per population
+		self.ind = ind
 
 		#generations table : initial pool
 		self.gentable = np.random.random_integers(0, len(self.people), size=(ind,16))
 
-		#fitness
+		#fitness of generation
 		self.fitness = Duty.fitness_gen(self, self.gentable)
 
-	#returns people and schedule
+	#returns object variables
 	def __repr__(self):
-		return("people : {} \nschedule :\n{}".format(self.people, self.pdtable))
+		return("people : {} \nschedule :\n{} \ngenerations : \n{} \nfitness : {}".format(
+			self.people, self.pdtable, self.gentable, self.fitness))
 
 	#total working hours for single person
-	#person (string)
 	def get_hours(self, person):
 		sum = 0
 		#how many hours in each shift
@@ -67,7 +79,9 @@ class Duty:
 	def get_std(self):
 		return(Duty.get_hours_all(self).values.std(ddof=1))
 
+
 	############ SIMULATED ANNEALING ############
+
 
 	#changes state by randomly assigning people to slots in schedule
 	def change_state_random(self):
@@ -104,13 +118,16 @@ class Duty:
 
 		return(self.pdtable)
 
-	########### GENETIC #############
 
-	#helper : returns fitness of individuals
+	############ GENETIC IMPLEMENTATION ############
+	
+
+	#helper : returns fitness of an individual
 	def fitness_single(self, ind):
 		hours = np.array([1,7,1,7,1,7,1,7,1,7,1,7,8,1,7,8])
 		sums = []
 
+		#takes dot product of hours vector and binary individual vector
 		for i in range(len(self.people)):
 			wherepeople = (ind == i).astype(int)
 			single_sum = np.sum(np.dot(hours, wherepeople))
@@ -126,15 +143,7 @@ class Duty:
 
 		return(np.array(fitness))
 
-	def best_fitness(self):
-		return(self.fitness[np.argmin(self.fitness)])
-
-	def return_optimal(self):
-		return("Best schedule: {} \nFitness: {}".format(
-			self.gentable[np.argmin(self.fitness)], 
-			self.fitness[np.argmin(self.fitness)]))
-
-	#selection of parents
+	#selection of best parent_num individuals in current gen
 	def selection(self, parent_num):
 		ind = np.argpartition(self.fitness, parent_num)[:parent_num]
 		parents = self.gentable[ind]
@@ -142,7 +151,7 @@ class Duty:
 
 		return(parents)
 
-	#crossover : swaps halves of parents 
+	#crossover : swaps halves of parents and generates offspringsize children
 	def crossover(self, parents, offspringsize):
 		offspring = np.empty((offspringsize,16))
 		crossover_point = 8
@@ -152,6 +161,7 @@ class Duty:
 			par1_idx = k%parents.shape[0]
 			par2_idx = (k+1)%parents.shape[0]
 
+			#swapping/crossover
 			offspring[k, 0:crossover_point] = parents[par1_idx, 0:crossover_point]
 			offspring[k, crossover_point:] = parents[par2_idx, crossover_point:]
 
@@ -173,6 +183,15 @@ class Duty:
 		self.gentable =  np.concatenate([parents, offspring])
 		self.fitness = Duty.fitness_gen(self, self.gentable)
 
+	#returns best fitness 
+	def best_fitness(self):
+		return(self.fitness[np.argmin(self.fitness)])
+
+	#returns best schedule and best fitness
+	def return_optimal(self):
+		return("Best schedule: {} \nFitness: {}".format(
+			self.gentable[np.argmin(self.fitness)], 
+			self.fitness[np.argmin(self.fitness)]))
 
 ################ tests ################
 #test = Duty(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'], 100)
