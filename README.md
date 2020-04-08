@@ -31,14 +31,27 @@ for number_of_cycles:
 	for number_of_trials_per_cycle:
 		change current state
 		if evaluation(current) > evaluation(best):
-			if random_number(0,1) < exp(-|evaluation(current) - evaluation(best)|/temp): accept current state
-			else: reject current state
-		else: accept current state
+			if random_number(0,1) < exp(-|evaluation(current) - evaluation(best)|/temp): 
+				best = current
+			else: 
+				reject current state
+		else: 
+			best = current
 	temp = alpha * temp
 
 return best schedule
 
 ```
+As shown above, several things are needed: 
+
+1. **Schedule data structure**: contains schedule, and schedule generation methods
+2. **Evaluation function**: scores state
+3. **Alpha**: controls the cooling of the temperature
+
+#### Schedule Data Structure
+The data structure contains an employee list, and a schedule as a pandas data frame: 
+
+![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.png "Performance Based on Trials Per Cycle")
 
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
