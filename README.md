@@ -19,7 +19,10 @@ I used two methods: simulated annealing and a genetic algorithm.
 ## In Depth
 ### DutySA Class
 
-![alt text](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle"){:height="75%" width="75%"}
+![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
+
+
+<img src="https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png" width="75%" height="75%">
 
 ### DutyGEN Class
 
