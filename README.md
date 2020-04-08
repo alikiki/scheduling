@@ -18,13 +18,31 @@ I used two methods: simulated annealing and a genetic algorithm.
 
 ## In Depth
 ### DutySA Class
+#### Overview
+Below is the pseudocode (note that in this case, we are trying to minimize our evaluation score):
+```
+let best = best schedule
+let current = current working state
 
-![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
+let temp = temperature
+let alpha = cooling factor
 
+for number_of_cycles: 
+	for number_of_trials_per_cycle:
+		change current state
+		if evaluation(current) > evaluation(best):
+			if random_number(0,1) < exp(-|evaluation(current) - evaluation(best)|/temp): accept current state
+			else: reject current state
+		else: accept current state
+	temp = alpha * temp
+
+return best schedule
+
+```
 
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
-<img src="https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png" width="75%" height="75%" align="middle">
+![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
 
 ### DutyGEN Class
 

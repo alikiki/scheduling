@@ -78,7 +78,7 @@ def accept(curr, bes, temperature):
 		else: return False
 	else:
 		return True
-#
+#helper : 
 def accept_stateswitch(curr, bes, temperature):
 	if curr.get_std() > bes.get_std() or random.random() < acc_prob(curr, bes, temperature): return True
 	else: return False
