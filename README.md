@@ -51,7 +51,7 @@ As shown above, several things are needed:
 #### Schedule Data Structure
 The data structure contains an employee list, and a schedule as a pandas data frame: 
 
-![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.png "Performance Based on Trials Per Cycle")
+![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.jpg "Performance Based on Trials Per Cycle")
 
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
