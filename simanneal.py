@@ -9,7 +9,7 @@ import math
 import structure as s
 
 ################## SIMULATED ANNEALING ##################
-def simulanneal(people,filenum):
+def simulanneal(people):
 	#best / optimal state
 	best = s.DutySA(people)
 	current = s.DutySA(people)
@@ -66,9 +66,9 @@ def simulanneal(people,filenum):
 	plt.plot(std_list, 'r.-')
 	plt.xlabel('Cycle')
 
-	plt.savefig('./simulated/results/SAresults' 
-		+ str(trial) + ' ' + str(filenum) + '.jpg', 
-		bbox_inches='tight')
+	#save images 
+	plt.savefig('./images/results/SAresults' 
+		+ str(trial) + '.jpg', bbox_inches='tight')
 	plt.show()
 
 #helper : whether or not worse solution should be accepted
@@ -109,7 +109,10 @@ def whichchange(people):
 
 		switchdata[i+1] = switchchange.get_std()
 		switchchange.change_state_switch()
+		
 		'''
+		........Alternate state-switch scheme........
+
 		#every 3 cycles, execute change_state_random
 		if i % 3 == 0:
 			switchdata[i+1] = switchchange.get_std()
@@ -125,14 +128,13 @@ def whichchange(people):
 	ax2 = fig.add_subplot(212)
 	ax2.plot(switchdata,'b.-')
 
-	plt.savefig('./simulated/comparisons/SAcomparison' 
-		+ str(trial) + '.jpg', 
-		bbox_inches='tight')
+	#save comparison images
+	plt.savefig('./images/comparisons/SAcomparison' 
+		+ str(trial) + '.jpg', bbox_inches='tight')
 	plt.show()
 
 
-for j in range(1,5):
-	simulanneal(['a','b','c','d','e','f'],j)
+simulanneal(['a','b','c','d','e','f'])
 #whichchange(['a','b','c','d','e','f'])
 
 
