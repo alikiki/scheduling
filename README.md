@@ -22,7 +22,9 @@ I used two methods: simulated annealing and a genetic algorithm.
 ![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
 
 
-<img src="https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png" width="75%" height="75%">
+I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
+
+<img src="https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png" width="75%" height="75%" align="middle">
 
 ### DutyGEN Class
 
