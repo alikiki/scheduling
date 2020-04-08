@@ -19,7 +19,7 @@ I used two methods: simulated annealing and a genetic algorithm.
 ## In Depth
 ### DutySA Class
 
-![alt text](./simulated/facet1.png "Logo Title Text 1")
+![alt text](https://github.com/ajeon66/scheduling/blob/master/facet1.png "Logo Title Text 1")
 
 ### DutyGEN Class
 
