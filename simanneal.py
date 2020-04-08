@@ -9,7 +9,7 @@ import math
 import structure as s
 
 ################## SIMULATED ANNEALING ##################
-def simulanneal(people,ind):
+def simulanneal(people,filenum):
 	#best / optimal state
 	best = s.DutySA(people)
 	current = s.DutySA(people)
@@ -18,7 +18,7 @@ def simulanneal(people,ind):
 	cycle = 50
 
 	#number of trials per cycle
-	trial = 20
+	trial = 40
 
 	#probability of accepting worse solution at start
 	pstart_worst = 0.7
@@ -66,6 +66,9 @@ def simulanneal(people,ind):
 	plt.plot(std_list, 'r.-')
 	plt.xlabel('Cycle')
 
+	plt.savefig('./simulated/results/SAresults' 
+		+ str(trial) + ' ' + str(filenum) + '.jpg', 
+		bbox_inches='tight')
 	plt.show()
 
 #helper : whether or not worse solution should be accepted
@@ -94,7 +97,7 @@ def whichchange(people):
 	#object for change_state_switch
 	switchchange = s.DutySA(people)
 
-	cycle = 10**2
+	cycle = 104
 
 	#lists for collecting standard deviation at end of each cycle
 	randomdata = np.zeros(cycle+1)
@@ -104,6 +107,9 @@ def whichchange(people):
 		randomdata[i+1] = randomchange.get_std()
 		randomchange.change_state_random()
 
+		switchdata[i+1] = switchchange.get_std()
+		switchchange.change_state_switch()
+		'''
 		#every 3 cycles, execute change_state_random
 		if i % 3 == 0:
 			switchdata[i+1] = switchchange.get_std()
@@ -111,7 +117,7 @@ def whichchange(people):
 		else:
 			switchdata[i+1] = switchchange.get_std()
 			switchchange.change_state_switch()
-			switchchange.change_state_switch()
+		'''
 
 	fig = plt.figure()
 	ax1 = fig.add_subplot(211)
@@ -119,10 +125,14 @@ def whichchange(people):
 	ax2 = fig.add_subplot(212)
 	ax2.plot(switchdata,'b.-')
 
+	plt.savefig('./simulated/comparisons/SAcomparison' 
+		+ str(trial) + '.jpg', 
+		bbox_inches='tight')
 	plt.show()
 
 
-simulanneal(['a','b','c','d','e','f'],0)
+for j in range(1,5):
+	simulanneal(['a','b','c','d','e','f'],j)
 #whichchange(['a','b','c','d','e','f'])
 
 

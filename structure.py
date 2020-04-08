@@ -28,7 +28,6 @@ class DutySA:
 		]
 
 	def __init__(self, people):
-		#.......... simulated annealing..........
 		#names list
 		self.people = people
 

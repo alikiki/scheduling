@@ -18,11 +18,11 @@ I used two methods: simulated annealing and a genetic algorithm.
 
 ## In Depth
 ### DutySA Class
+
+![alt text](./simulated/facet1.png "Logo Title Text 1")
+
 ### DutyGEN Class
 
-|Monday     |Tuesday    |Wednesday  |Thursday   |Friday     |Saturday   |Sunday     |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-|Time1|Time2|Time1|Time2|Time1|Time2|Time1|Time2|Time1|Time2|Time3|Time1|Time2|Time3|
 
 
 
