@@ -2,7 +2,7 @@
 I was a soldier in the past year, and something my superiors and my fellow soldiers always got worked up about was how to schedule watch duty. As always, in trying to make my life easier, this is my attempt at making a sufficiently fair watch duty schedule. 
 
 ## Overview
-I used two methods: simulated annealing and a genetic algorithm. 
+The problem involves the slotting of a number of people into 3 time slots over the course of the week. I used two methods: simulated annealing and a genetic algorithm. 
 
 1. Simulated Annealing
 
@@ -18,7 +18,6 @@ I used two methods: simulated annealing and a genetic algorithm.
 
 ## In Depth
 ### DutySA Class
-#### Overview
 Below is the pseudocode (note that in this case, we are trying to minimize our evaluation score):
 ```
 let best = best schedule
@@ -44,14 +43,18 @@ return best schedule
 ```
 As shown above, several things are needed: 
 
-1. **Schedule data structure**: contains schedule, and schedule generation methods
-2. **Evaluation function**: scores state
-3. **Alpha**: controls the cooling of the temperature
+1. Schedule data structure: contains schedule, and schedule generation methods
+2. Evaluation function: scores state
+3. Alpha: controls the cooling of the temperature
 
 #### Schedule Data Structure
-The data structure contains an employee list, and a schedule as a pandas data frame: 
+The data structure contains an employee list, and a schedule as a pandas data frame. Below is the schedule, visualized: 
 
-![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.jpg "Performance Based on Trials Per Cycle")
+![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.jpg "Pandas Schedule")
+
+I experimented with two methods of changing state. The first method was simply a randomized schedule generator; it slotted a random selection of people into random slots. The second method involved swapping two slots; two random slots A and B were chosen, and the person in slot A is switched with the person in slot B. (something about why I chose both methods, and which method is better)
+
+The evaluation function is simply the standard deviation of the total number of hours worked by each worker in the inputted schedule. Under this evaluation function, the best schedule is one that has every worker working for a similar number of hours. Of course, the ideal schedule has each person working a similar number of hours in addition to not having a single worker working for multiple shifts in a row, but to understand the simulated annealing algorithm better, I decided to simplify the problem question. 
 
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
