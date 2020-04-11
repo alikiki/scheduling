@@ -56,6 +56,7 @@ I experimented with two methods of changing state. The first method was simply a
 
 The evaluation function is simply the standard deviation of the total number of hours worked by each worker in the inputted schedule. Under this evaluation function, the best schedule is one that has every worker working for a similar number of hours. Of course, the ideal schedule has each person working a similar number of hours in addition to not having a single worker working for multiple shifts in a row, but to understand the simulated annealing algorithm better, I decided to simplify the problem question. 
 
+#### Curiosities
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
 ![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
@@ -63,7 +64,25 @@ I was curious as to how trial number per cycle affected overall performance - I 
 In general, the simulated annealing algorithm worked quite well. More interesting comparisons between simulated annealing and the genetic algorithm below.
 
 ### DutyGEN Class
+Below is the pseudocode. 
+```
+population = generate_population()
 
+for i in number_of_generations:
+	parents = best_individuals(population)
+	offspring = mutation(crossover(parents))
 
+	population = parents + offspring
+	
+```
+Similar to the DutySA class, we need a couple things:
+1. Chromosome encoding: representation of a schedule
+2. Population generation method
+3. Parent selection method: to determine best individuals in population
+4. Offspring generation method: involves crossover and point mutation
+
+#### Genes, Jeans, and Chromosomes
+The main problem to address in the chromosome encoding is the flattening of the information in a schedule into a one-dimensional list. The schedule has a total of 16 slots, so I created an array of length 16, with each entry being the worker on duty during that time slot and day. See below: 
+![](https://github.com/ajeon66/scheduling/blob/master/images/gendatastructure.jpg "Chromosome")
 
 
