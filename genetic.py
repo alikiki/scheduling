@@ -23,13 +23,15 @@ def genetic(people, ind, cycles):
 		best.append(Pop.best_fitness())
 		print("Cycle: {} \n{}".format(i, Pop.return_optimal()))
 
-	print(Pop.sum_single(Pop.best_individual()))
+	print("Hours: {}".format(Pop.sum_single(Pop.best_individual())))
+	print("Visualized: \n{}".format(Pop.convert(Pop.best_individual())))
+
 	#plots best results per cycle
 	plt.plot(best, 'b.-')
 	plt.xlabel('Generation')
 	plt.show()
 
-genetic(['a','b','c','d','e','f'], 100, 20)
+genetic(['a','b','c','d','e','f','g','h','i'], 150, 50)
 
 
 

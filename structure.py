@@ -2,6 +2,10 @@ import pandas as pd
 import numpy as np
 import random
 
+weekdays = [
+		'Monday', 'Tuesday', 'Wednesday',
+		'Thursday', 'Friday', 'Saturday', 'Sunday'
+		]
 
 class DutySA:
 	"""
@@ -21,11 +25,6 @@ class DutySA:
 		helpers:
 			switcher = switches two slots 
 	"""
-
-	weekdays = [
-		'Monday', 'Tuesday', 'Wednesday',
-		'Thursday', 'Friday', 'Saturday', 'Sunday'
-		]
 
 	def __init__(self, people):
 		#names list
@@ -65,7 +64,7 @@ class DutySA:
 		self.pdtable = pd.DataFrame(
 			{hour : [random.choice(self.people) for _ in range(7)]
 			if hour < 2 else [0 for i in range(5)]+[random.choice(self.people) for _ in range(2)]
-			for hour in range(3)},index=DutySA.weekdays)
+			for hour in range(3)},index=weekdays)
 		return(self.pdtable)
 
 
@@ -126,7 +125,7 @@ class DutyGEN:
 		self.ind = ind
 
 		#generations table : initial pool
-		self.gentable = np.random.random_integers(0, len(self.people), size=(ind,16))
+		self.gentable = np.random.random_integers(0, len(self.people)-1, size=(ind,16))
 
 		#fitness of generation
 		self.fitness = DutyGEN.fitness_gen(self, self.gentable)
@@ -136,12 +135,13 @@ class DutyGEN:
 		return("people : {} \ngeneration : \n{} \nfitness : {}".format(
 			self.people, self.gentable, self.fitness))
 
+	#helper : returns total working hours 
 	def sum_single(self, ind):
 		hours = np.array([1,7,1,7,1,7,1,7,1,7,1,7,8,1,7,8])
 		sums = []
 
 		#takes dot product of hours vector and binary individual vector
-		for i in range(len(self.people)+1):
+		for i in range(len(self.people)):
 			wherepeople = (ind == i).astype(int)
 			single_sum = np.sum(np.dot(hours, wherepeople))
 			sums.append(single_sum)
@@ -150,16 +150,7 @@ class DutyGEN:
 
 	#helper : returns fitness of an individual
 	def fitness_single(self, ind):
-		hours = np.array([1,7,1,7,1,7,1,7,1,7,1,7,8,1,7,8])
-		sums = []
-
-		#takes dot product of hours vector and binary individual vector
-		for i in range(len(self.people)+1):
-			wherepeople = (ind == i).astype(int)
-			single_sum = np.sum(np.dot(hours, wherepeople))
-			sums.append(single_sum)
-
-		return(np.std(sums))
+		return(np.std(DutyGEN.sum_single(self,ind)))
 
 	#returns fitness of whole generation (list)
 	def fitness_gen(self, generation):
@@ -222,6 +213,19 @@ class DutyGEN:
 		return("Best schedule: {} \nFitness: {}".format(
 			DutyGEN.best_individual(self), DutyGEN.best_fitness(self)))
 
+	#converts best individual to a readable schedule 
+	def convert(self, sched):
+		names = [self.people[i] for i in sched]
+		return(pd.DataFrame({
+			'Monday' : [names[0], names[1], "-"],
+			'Tuesday' : [names[2], names[3], "-"],
+			'Wednesday' : [names[4], names[5], "-"],
+			'Thursday' : [names[6], names[7], "-"],
+			'Friday' : [names[8], names[9], "-"],
+			'Saturday' : [names[10], names[11], names[12]],
+			'Sunday' : [names[13], names[14], names[15]]}, 
+			columns=weekdays))
+
 ################ tests ################
 #test = DutySA(['alpha', 'bravo', 'charlie', 'delta', 'echo', 'hotel', 'india'])
 #print(test)
@@ -234,7 +238,7 @@ class DutyGEN:
 #print(test.get_std())
 #test.change_state_switch()
 
-#test = DutyGEN(['a','b','c','d','e','f'], 100)
+#test = DutyGEN(['a','b','c','d','e','f','g'], 100)
 #print("Generation: \n{}".format(test.gentable))
 #print("Fitness: \n{}".format(test.fitness))
 #print(test.selection(5))
@@ -243,6 +247,6 @@ class DutyGEN:
 #print(test.fitness_gen(test.crossover(test.selection(5), 5)))
 #print(test.mutation(test.crossover(test.selection(5), 5)))
 #print(test.fitness_gen(test.mutation(test.crossover(test.selection(5), 5))))
-
+#print(test.convert([4, 3, 5, 4, 2, 5, 1, 3, 1, 5, 6, 6, 0, 2, 2, 1]))
 
 

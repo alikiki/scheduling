@@ -48,7 +48,7 @@ As shown above, several things are needed:
 3. Alpha: controls the cooling of the temperature
 
 #### Schedule Data Structure
-The data structure contains an employee list, and a schedule as a pandas data frame. Below is the schedule, visualized: 
+The data structure contains an employee list, and a schedule as a pandas data frame. Below is the pandas data frame, visualized: 
 
 ![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.jpg "Pandas Schedule")
 
@@ -59,6 +59,8 @@ The evaluation function is simply the standard deviation of the total number of 
 I was curious as to how trial number per cycle affected overall performance - I suspected that there would not be a significant upgrade. Indeed, as shown in the table below, because the algorithm simply runs through a set number of trials to generate enough states to "work with", the trial number shouldn't make a huge difference. 
 
 ![](https://github.com/ajeon66/scheduling/blob/master/images/results/combined.png "Performance Based on Trials Per Cycle")
+
+In general, the simulated annealing algorithm worked quite well. More interesting comparisons between simulated annealing and the genetic algorithm below.
 
 ### DutyGEN Class
 

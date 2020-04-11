@@ -9,6 +9,20 @@ import math
 import structure as s
 
 ################## SIMULATED ANNEALING ##################
+
+#helper : whether or not worse solution should be accepted
+def accept(curr, bes, temperature):
+	if curr.get_std() > bes.get_std():
+		if random.random() < acc_prob(curr, bes, temperature): return True
+		else: return False
+	else:
+		return True
+
+#helper : calculuates acceptance probability
+def acc_prob(curr, bes, temperature):
+	delta_E = abs(curr.get_std()- bes.get_std())
+	return(math.exp(-delta_E / temperature))
+
 def simulanneal(people):
 	#best / optimal state
 	best = s.DutySA(people)
@@ -59,35 +73,20 @@ def simulanneal(people):
 		#lower temperature
 		temp = temp_frac * temp
 
-	print(best)
-	print('Standard Deviation: {}'.format(best.get_std()))
+	print('Fitness: {}'.format(best.get_std()))
+	print('Hours: \n{}'.format(best.get_hours_all()))
+	print(best.pdtable.transpose())
 
 	#plot best states per cycle
 	plt.plot(std_list, 'r.-')
 	plt.xlabel('Cycle')
+	plt.show()
 
+	'''
 	#save images 
 	plt.savefig('./images/results/SAresults' 
 		+ str(trial) + '.jpg', bbox_inches='tight')
-	plt.show()
-
-#helper : whether or not worse solution should be accepted
-def accept(curr, bes, temperature):
-	if curr.get_std() > bes.get_std():
-		if random.random() < acc_prob(curr, bes, temperature): return True
-		else: return False
-	else:
-		return True
-#helper : 
-def accept_stateswitch(curr, bes, temperature):
-	if curr.get_std() > bes.get_std() or random.random() < acc_prob(curr, bes, temperature): return True
-	else: return False
-
-#helper : calculuates acceptance probability
-def acc_prob(curr, bes, temperature):
-	delta_E = abs(curr.get_std()- bes.get_std())
-	return(math.exp(-delta_E / temperature))
-
+	'''
 
 #testing which change_state is better, random or switch
 def whichchange(people):
@@ -134,7 +133,7 @@ def whichchange(people):
 	plt.show()
 
 
-simulanneal(['a','b','c','d','e','f'])
+simulanneal(['a','b','c','d','e','f','g','h','i'])
 #whichchange(['a','b','c','d','e','f'])
 
 
