@@ -81,16 +81,24 @@ Similar to the DutySA class, we need a couple things:
 3. Parent selection method: to determine best individuals in population
 4. Offspring generation method: involves crossover and point mutation
 
-#### Genes, Jeans, and Chromosomes
+#### Denim, Chromosomes, and Sexual Reproduction
 The main problem to address in the chromosome encoding is the flattening of the schedule information into a one-dimensional list. The schedule has a total of 16 slots, so I created an array of length 16, with each entry being the worker during that time slot and day. See below: 
 ![](https://github.com/ajeon66/scheduling/blob/master/images/readme/gendatastructure.jpg "Chromosome")
 
 Once this chromosome structure is set, evolutionary mechanisms such as parent selection, crossover, mutation, and population generation can be designed. (note that in our case, chromosomes and individuals are the same thing.)
 
-For population generation, the number of individuals per population, say `n` can be set, and the script generates a population of random individuals. The fitness of each individual is then calculated, and the `floor(n/2)` individuals with the best fitness scores are chosen as parents for the next generation. To generate offspring, crossover occurs, where half of individual A's chromosomes are swapped with half of individuals B's chromosomes to create a new individual - see below.
+For population generation, the number of individuals per population `n` can be set, and the script generates a population of random individuals. The fitness of each individual is then calculated, and the `floor(n/2)` individuals with the best fitness scores are chosen as parents for the next generation. To generate offspring, crossover occurs, where half of individual A's chromosomes are swapped with half of individuals B's chromosomes to create a new individual - see below.
 ![](https://github.com/ajeon66/scheduling/blob/master/images/readme/crossover.jpg "Crossover")
 
-Point mutation is then applied to all the new offspring, where one gene in the chromosome is randomly selected and replaced by another randomly chosen gene. The resulting offspring, along with the parents, compose the next generation. In contrast to evolution in the real world, all individuals are immortal; for example, a parent with an extremely high fitness score will survive until another individual with a higher fitness score arrives. 
+Point mutation is then applied to all the new offspring, where one gene in the chromosome is randomly selected and replaced by another randomly chosen gene. The resulting offspring, along with the parents, compose the next generation. In contrast to evolution in the real world, all individuals are immortal; for example, a parent with an extremely high fitness score will survive until another individual with a higher fitness score arrives. Furthermore, the number of individuals per population `n` holds for all generations; each generation holds the same number of individuals. 
+
+#### Curiosities
+There seemed to be a lower limit on the best fitness score. For example, in 6-person and 8-person situations, the best individuals consistently had fitness scores of `2.373` and `0.000`, respectively. See the data below. Are these really the best possible schedules? (insert graph)
+
+### Comparisons between SA and GEN
+SA ran for a much longer time on average, and found worse schedules than GEN consistently. If I were to choose one to apply, I would absolutely choose the GEN algorithm. 
+
+For applications, it seemed that the fairest schedules were generated with 8-worker scenarios. Therefore, if there are less than 8 workers available, an order can be decided amongst the workers, so that every worker works the same amount of time over time. 
 
 
 
