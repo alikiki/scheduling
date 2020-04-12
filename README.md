@@ -50,7 +50,7 @@ As shown above, several things are needed:
 #### Schedule Data Structure
 The data structure contains an employee list, and a schedule as a pandas data frame. Below is the pandas data frame, visualized: 
 
-![](https://github.com/ajeon66/scheduling/blob/master/images/datastructure.jpg "Pandas Schedule")
+![](https://github.com/ajeon66/scheduling/blob/master/images/readme/datastructure.jpg "Pandas Schedule")
 
 I experimented with two methods of changing state. The first method was simply a randomized schedule generator; it slotted a random selection of people into random slots. The second method involved swapping two slots; two random slots A and B were chosen, and the person in slot A is switched with the person in slot B. (something about why I chose both methods, and which method is better)
 
@@ -82,7 +82,18 @@ Similar to the DutySA class, we need a couple things:
 4. Offspring generation method: involves crossover and point mutation
 
 #### Genes, Jeans, and Chromosomes
-The main problem to address in the chromosome encoding is the flattening of the information in a schedule into a one-dimensional list. The schedule has a total of 16 slots, so I created an array of length 16, with each entry being the worker on duty during that time slot and day. See below: 
-![](https://github.com/ajeon66/scheduling/blob/master/images/gendatastructure.jpg "Chromosome")
+The main problem to address in the chromosome encoding is the flattening of the schedule information into a one-dimensional list. The schedule has a total of 16 slots, so I created an array of length 16, with each entry being the worker during that time slot and day. See below: 
+![](https://github.com/ajeon66/scheduling/blob/master/images/readme/gendatastructure.jpg "Chromosome")
+
+Once this chromosome structure is set, evolutionary mechanisms such as parent selection, crossover, mutation, and population generation can be designed. (note that in our case, chromosomes and individuals are the same thing.)
+
+For population generation, the number of individuals per population, say `n` can be set, and the script generates a population of random individuals. The fitness of each individual is then calculated, and the `floor(n/2)` individuals with the best fitness scores are chosen as parents for the next generation. To generate offspring, crossover occurs, where half of individual A's chromosomes are swapped with half of individuals B's chromosomes to create a new individual - see below.
+![](https://github.com/ajeon66/scheduling/blob/master/images/readme/crossover.jpg "Crossover")
+
+Point mutation is then applied to all the new offspring, where one gene in the chromosome is randomly selected and replaced by another randomly chosen gene. The resulting offspring, along with the parents, compose the next generation. In contrast to evolution in the real world, all individuals are immortal; for example, a parent with an extremely high fitness score will survive until another individual with a higher fitness score arrives. 
+
+
+
+
 
 
