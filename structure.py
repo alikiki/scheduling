@@ -213,6 +213,11 @@ class DutyGEN:
 		return("Best schedule: {} \nFitness: {}".format(
 			DutyGEN.best_individual(self), DutyGEN.best_fitness(self)))
 
+	#status updater
+	def status(self, cycle):
+		print("Generation: \n{} \n Fitness: \n{} \n Cycle: {} \n {}".format(
+			self.gentable, self.fitness, cycle, DutyGEN.return_optimal(self)))
+
 	#converts best individual to a readable schedule 
 	def convert(self, sched):
 		names = [self.people[i] for i in sched]
