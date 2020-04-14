@@ -11,19 +11,6 @@ class DutySA:
 	"""
 	DutySA : schedule data structure for simulated annealing
 
-	Instance variables: 
-		people (list)
-		pdtable (pandas DataFrame)
-
-	Methods:
-		get_hours = gets number of hours worked for single person
-		get_hours_all = gets number of hours worked for all people
-		get_std = gets standard deviation of number of hours worked
-		change_state_random = randomly changes all slots of schedule
-		change_state_switch = randomly chooses two slots, then switches them
-
-		helpers:
-			switcher = switches two slots 
 	"""
 
 	def __init__(self, people):
@@ -96,25 +83,8 @@ class DutySA:
 
 class DutyGEN:
 	"""
-	DutyGEN : schedule data structure
+	DutyGEN : schedule data structure for genetic 
 
-	Instance variables: 
-		people (list)
-		ind (integer)
-		gentable (numpy array)
-		fitness (numpy array)
-
-	Methods:
-		fitness_gen = returns fitness of current generation
-		selection = selects best individuals of population 
-		crossover = crosses chromosomes of best individuals of population
-		mutation = applies random point mutation to offspring of best parents
-		newpop = combines parents and offspring to make a next generation
-		best_fitness = returns best fitness score of current generation
-		return_optimal = returns best individual and best fitness 
-
-		helpers: 
-			fitness_single = returns fitness of single generation
 	"""
 
 	def __init__(self, people, ind):
