@@ -10,7 +10,7 @@ The problem involves the slotting of a number of people into 3 time slots over t
 
    This implementation was made in Python, using a pandas-centric data structure.
 
-2. (Genetic Implementation)
+2. Genetic Implementation
 
    While looking for papers that would improve my simulated annealing implementation, I stumbled on using genetic algorithms for block scheduling. I've always been excited by biology (and yes, I did once watch a [Youtube video where a genetic algorithm beat Mario with ease](https://www.youtube.com/watch?v=qv6UVOQ0F44 "Genetically superior Mario video")), so I tried it. In short, it works reasonably well. Better than the simulated annealing implementation, in general.
 
